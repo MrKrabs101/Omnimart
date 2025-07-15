@@ -1,89 +1,55 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>OmniMart - Home</title>
+  <title>Omnimart</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Header Section -->
+  <!-- Header -->
   <header>
-    <h1>OmniMart</h1>
+    <h1>Omnimart</h1>
     <nav>
-      <a href="#">Home</a>
-      <a href="#">Products</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
+      <a href="/">Home</a>
+      <a href="#products">Products</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
       <a href="/cart">Cart 🛒</a>
     </nav>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero">
-    <h2>Welcome to OmniMart</h2>
-    <p>Your One-Stop Online Store!</p>
-    <button>Shop Now</button>
-  </section>
+  <div class="hero-title">
+     <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Omnimart Logo" class="inline-logo">
+    <h1>Omnimart</h1>
+    <p class="tagline">Scroll. Shop. Smile.</p>
+  </div>
+</section>
+
+
+</section>
+
 
   <!-- Products Section -->
-  <section class="products">
-    <h2>Featured Products</h2>
+  <section class="products" id="products">
+    <h2>Our Products</h2>
     <div class="product-grid">
-
-      <!-- Mr. Krabs T-Shirt -->
-      <div class="product-card">
-        <img src="{{ url_for('static', filename='images/Mr.krabshirt.png') }}" alt="Mr. Krabs T-shirt">
-        <p><strong>Mr. Krabs T-Shirt</strong></p>
-        <p>$24.99</p>
-        <button>Add to Cart</button>
-      </div>
-
-      <!-- Patrick Star Shorts -->
-      <div class="product-card">
-        <img src="{{ url_for('static', filename='images/Patrickshort.png') }}" alt="Patrick Star Shorts">
-        <p><strong>Patrick Star Shorts</strong></p>
-        <p>$19.99</p>
-        <button>Add to Cart</button>
-      </div>
-
-      <!-- SpongeBob AirPods Case -->
-      <div class="product-card">
-        <img src="{{ url_for('static', filename='images/SpongeBob.png') }}" alt="SpongeBob AirPods Case">
-        <p><strong>SpongeBob AirPods Case</strong></p>
-        <p>$14.99</p>
-        <button>Add to Cart</button>
-      </div>
-
-      <!-- Plankton Hoodie -->
-      <div class="product-card">
-        <img src="{{ url_for('static', filename='images/Planktonhoodie.png') }}" alt="Plankton Hoodie">
-        <p><strong>Plankton Hoodie</strong></p>
-        <p>$29.99</p>
-        <button>Add to Cart</button>
-      </div>
-
-      <!-- Sandy Cheeks Hat -->
-      <div class="product-card">
-        <img src="{{ url_for('static', filename='images/Sandycap.png') }}" alt="Sandy Cap">
-        <p><strong>Sandy Cap</strong></p>
-        <p>$17.49</p>
-        <button>Add to Cart</button>
-      </div>
-
-      <!-- Squidward Slippers -->
-      <div class="product-card">
-        <img src="{{ url_for('static', filename='images/Squidwardsocks.png') }}" alt="Squidward Socks">
-        <p><strong>Squidward Socks</strong></p>
-        <p>$22.99</p>
-        <button>Add to Cart</button>
-      </div>
-
+      {% for item in products %}
+        <div class="product-card">
+          <img src="{{ url_for('static', filename='images/' ~ item.image_url) }}" alt="{{ item.name }}">
+          <h4>{{ item.name }}</h4>
+          <p>${{ item.price }}</p>
+          <button>Add to Cart</button>
+        </div>
+      {% endfor %}
     </div>
   </section>
 
-  <!-- Footer Section -->
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 OmniMart. All rights reserved.</p>
+    <p>&copy; 2025 Omnimart. All rights reserved.</p>
   </footer>
 
 </body>
