@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Sign Up</title>
+
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
+  <!-- JavaScript Logic -->
+  <script defer src="{{ url_for('static', filename='js/login.js') }}"></script>
+</head>
+
+<body>
+
+  <div class="form-wrapper">
+    <!-- Login Form -->
+    <div id="login-form">
+      <h2>Login</h2>
+      <form method="POST" action="/login">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Type your email" required>
+
+        <div class="password-wrapper">
+            <input type="password" name="password" id="login-password" placeholder="Type your password" required>
+            <span class="toggle-password" onclick="togglePassword('login-password')">👁️</span>
+        </div>
+
+
+        <div id="login-error" class="error-message hidden">Invalid username or password.</div>
+
+        <a href="#" class="forgot">Forgot password?</a>
+        <button type="submit">LOGIN</button>
+      </form>
+      
+
+      <p class="signup-text">Or Sign Up Using</p>
+      <div class="social-icons">
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-google"></i>
+      </div>
+      <div class="social-icons">
+        <img src="{{ url_for('static', filename='images/facebook.png') }}" alt="Facebook" class="social-icon">
+        <img src="{{ url_for('static', filename='images/twitter.png') }}" alt="Twitter" class="social-icon">
+        <img src="{{ url_for('static', filename='images/google.png') }}" alt="Google" class="social-icon">
+    </div>
+      <p class="toggle-link" onclick="showSignup()">SIGN UP</p>
+    </div>
+
+    <!-- Signup Form -->
+<div id="signup-form" class="hidden">
+  <h2>Sign Up</h2>
+  <form method="POST" action="/signup">
+    <label>Name</label>
+    <input type="text" name="name" placeholder="Type your name" required>
+
+    <label>Email</label>
+    <input type="email" name="email" placeholder="Type your email" required>
+
+    <label>Password</label>
+<div class="password-wrapper">
+  <input type="password" name="password" id="signup-password" placeholder="Create a password" required>
+  <span class="toggle-password" onclick="togglePassword('signup-password')">👁️</span>
+</div>
+
+    <button type="submit">SIGN UP</button>
+  </form>
+
+  <p class="toggle-link" onclick="showLogin()">Already have an account? LOGIN</p>
+</div>
+
+  </div>
+
+</body>
+</html>

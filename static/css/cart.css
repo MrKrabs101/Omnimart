@@ -1,9 +1,38 @@
+
+/* Header */
+header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header h1 {
+  margin: 0;
+  font-family: 'Ethnocentric', sans-serif;
+}
+header nav a {
+  color: white;
+  margin-left: 15px;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+  color: #01ADDB;
+}
+
+
+/* Page Font */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  background: #f5f5f5;
   margin: 0;
   padding: 0;
-  background: #f5f5f5;
 }
+
 
 .container {
   max-width: 1000px;

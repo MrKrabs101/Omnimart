@@ -11,26 +11,32 @@
   <!-- Header -->
   <header>
     <h1>Omnimart</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="#products">Products</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-      <a href="/cart">Cart 🛒</a>
-    </nav>
+      <nav>
+        <a href="/">Home</a>
+        <a href="#products">Products</a>
+        <a href="/cart">Cart 🛒</a>
+        <div class="auth-links">
+          {% if session.get("user_name") %}
+              <span>Welcome, {{ session["user_name"] }}</span>
+              <a href="/logout">Logout</a>
+          {% else %}
+              <a href="/login">Login</a>
+              <a href="/signup">Sign Up</a>
+          {% endif %}
+        </div>
+      </nav>
   </header>
 
   <section class="hero">
   <div class="hero-title">
      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Omnimart Logo" class="inline-logo">
-    <h1>Omnimart</h1>
-    <p class="tagline">Scroll. Shop. Smile.</p>
+    <h1 class="outline-hover">OMNIMART</h1>
+    <p class="outline-hover tagline">Scroll. Shop. Smile.</p>
   </div>
 </section>
 
 
 </section>
-
 
   <!-- Products Section -->
   <section class="products" id="products">
@@ -50,6 +56,10 @@
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 Omnimart. All rights reserved.</p>
+    <nav class="footer-nav">
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </footer>
 
 </body>
