@@ -1,64 +1,79 @@
-const cart = {
-  "Product A": { price: 10.00, qty: 1, img: "" },
-  "Product B": { price: 15.00, qty: 1, img: "" },
-  "Product C": { price: 20.00, qty: 1, img: "" }
-};
-
-function updateCartUI() {
-  const cartItems = document.getElementById('cart-items');
-  const itemCount = document.getElementById('item-count');
-  const cartTotal = document.getElementById('cart-total');
-  const hstField = document.getElementById('hst');
-
-  cartItems.innerHTML = '';
-  let subtotal = 0;
-  let count = 0;
-
-  for (let item in cart) {
-    const { price, qty, img } = cart[item];
-    const itemTotal = price * qty;
-    subtotal += itemTotal;
-    count += qty;
-
-    const itemDiv = document.createElement('div');
-    itemDiv.className = 'cart-item';
-    itemDiv.innerHTML = `
-      <img src="${img}" alt="${item}">
-      <div class="item-details">
-        <h4>${item}</h4>
-        <p>Price: $${price.toFixed(2)}</p>
-        <div class="qty-controls">
-          <button onclick="changeQty('${item}', -1)">-</button>
-          <span>${qty}</span>
-          <button onclick="changeQty('${item}', 1)">+</button>
-          <button onclick="removeItem('${item}')">Delete</button>
-        </div>
-      </div>
-    `;
-    cartItems.appendChild(itemDiv);
+document.addEventListener('DOMContentLoaded', () => {
+  // Checkout confirmation
+  const checkoutBtn = document.getElementById('checkout');
+  if (checkoutBtn) {
+    checkoutBtn.onclick = () => {
+      const confirmation = document.getElementById('confirmation-msg');
+      if (confirmation) {
+        confirmation.classList.remove('hidden');
+      }
+    };
   }
 
-  const hst = subtotal * 0.13;
-  const totalWithTax = subtotal + hst;
+  // Add to cart buttons
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', () => {
+      const productId = button.getAttribute('data-id');
+      addToCart(productId);
+    });
+  });
+});
 
-  itemCount.textContent = count;
-  hstField.textContent = hst.toFixed(2);
-  cartTotal.textContent = `Total: $${totalWithTax.toFixed(2)}`;
+function addToCart(asin) {
+  const qty = document.getElementById("qty").value;
+  fetch(`/add-to-cart/${asin}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ qty: qty })
+  })
+  .then(response => {
+    if (response.ok) {
+      document.getElementById("cart-message").textContent = "Added to cart!";
+    } else {
+      document.getElementById("cart-message").textContent = "Failed to add to cart.";
+    }
+  })
+  .catch(error => {
+    console.error("Error:", error);
+    document.getElementById("cart-message").textContent = "Error adding to cart.";
+  });
 }
 
-function changeQty(item, delta) {
-  cart[item].qty += delta;
-  if (cart[item].qty <= 0) delete cart[item];
-  updateCartUI();
+
+function loadProducts(category = '', search = '') {
+  let url = '/api/products';
+  const params = [];
+
+  if (category) params.push(`category=${encodeURIComponent(category)}`);
+  if (search) params.push(`search=${encodeURIComponent(search)}`);
+  if (params.length) url += '?' + params.join('&');
+
+  fetch(url)
+    .then(res => res.json())
+    .then(products => {
+      const grid = document.querySelector('.product-grid');
+      grid.innerHTML = '';
+
+      products.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <img src="/static/images/${item.image_url}" alt="${item.name}">
+          <h4>${item.name}</h4>
+          <p>$${item.price}</p>
+          <button class="add-to-cart" data-id="${item.id}">Add to Cart</button>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', () => {
+          const productId = button.getAttribute('data-id');
+          addToCart(productId);
+        });
+      });
+    })
+    .catch(err => console.error("Failed to load products:", err));
 }
-
-function removeItem(item) {
-  delete cart[item];
-  updateCartUI();
-}
-
-document.getElementById('checkout').onclick = () => {
-  document.getElementById('confirmation-msg').classList.remove('hidden');
-};
-
-updateCartUI();

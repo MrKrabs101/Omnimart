@@ -11,47 +11,51 @@
   <!-- Header -->
   <header>
     <h1>Omnimart</h1>
-      <nav>
-        <a href="/">Home</a>
-        <a href="#products">Products</a>
-        <a href="/cart">Cart 🛒</a>
-        <div class="auth-links">
-          {% if session.get("user_name") %}
-              <span>Welcome, {{ session["user_name"] }}</span>
-              <a href="/logout">Logout</a>
-          {% else %}
-              <a href="/login">Login</a>
-              <a href="/signup">Sign Up</a>
-          {% endif %}
-        </div>
-      </nav>
+    <nav>
+      <a href="/">Home</a>
+      <a href="#products">Products</a>
+      <a href="/cart">Cart 🛒</a>
+      <div class="auth-links">
+        {% if session.get("user_name") %}
+            <span>Welcome, {{ session["user_name"] }}</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/signup">Sign Up</a>
+        {% endif %}
+      </div>
+    </nav>
   </header>
 
+  <!-- Hero Section -->
   <section class="hero">
-  <div class="hero-title">
-     <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Omnimart Logo" class="inline-logo">
-    <h1 class="outline-hover">OMNIMART</h1>
-    <p class="outline-hover tagline">Scroll. Shop. Smile.</p>
-  </div>
-</section>
-
-
-</section>
-
-  <!-- Products Section -->
-  <section class="products" id="products">
-    <h2>Our Products</h2>
-    <div class="product-grid">
-      {% for item in products %}
-        <div class="product-card">
-          <img src="{{ url_for('static', filename='images/' ~ item.image_url) }}" alt="{{ item.name }}">
-          <h4>{{ item.name }}</h4>
-          <p>${{ item.price }}</p>
-          <button>Add to Cart</button>
-        </div>
-      {% endfor %}
+    <div class="hero-title">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Omnimart Logo" class="inline-logo">
+      <h1 class="outline-hover">OMNIMART</h1>
+      <p class="outline-hover tagline">Scroll. Shop. Smile.</p>
     </div>
   </section>
+
+  <!-- Products Section -->
+  <h1>Featured Products</h1>
+  <div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+      <a href="/product/{{ product['asin'] }}">
+        <img src="{{ product['image_url'] or 'https://via.placeholder.com/150?text=No+Image' }}"
+             alt="{{ product['title'] }}"
+             onerror="this.onerror=null;this.src='https://via.placeholder.com/150?text=No+Image';">
+        <h3>{{ product['title'] }}</h3>
+      </a>
+      <p><strong>Brand:</strong> {{ product['brand'] }}</p>
+      <p><strong>Price:</strong> {{ product['currency'] }} {{ product['final_price'] }}</p>
+      <p><strong>Rating:</strong> {{ product['rating'] }}</p>
+      <form action="{{ url_for('add_to_cart', asin=product['asin']) }}" method="post">
+        <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
 
   <!-- Footer -->
   <footer>
@@ -62,5 +66,6 @@
     </nav>
   </footer>
 
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

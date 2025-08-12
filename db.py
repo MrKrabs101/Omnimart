@@ -1,20 +1,21 @@
-import mysql.connector
+import sqlite3
 
 def get_db_connection():
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="omnimart"
-    )
+    conn = sqlite3.connect("db/omni.db")  # Make sure this matches your actual file
+    conn.row_factory = sqlite3.Row
     return conn
 
-def execute_query(query, params=None, fetch=False, dictionary=False):
+def execute_query(query, params=(), fetch=False, dictionary=False):
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=dictionary)
-    cursor.execute(query, params or ())
-    
-    result = cursor.fetchall() if fetch else None
+    cursor = conn.cursor()
+    cursor.execute(query, params)
+
+    result = None
+    if fetch:
+        rows = cursor.fetchall()
+        result = [dict(row) for row in rows] if dictionary else rows
+
     conn.commit()
+    cursor.close()
     conn.close()
     return result

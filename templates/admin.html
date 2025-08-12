@@ -1,0 +1,46 @@
+<!-- templates/admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+<header>
+  <a href="/" style="text-decoration: none; color: white;">
+    <h1>Omnimart</h1>
+  </a>
+</header>
+  <div class="container">
+    <h1>Admin Panel</h1>
+
+    <form method="POST" action="/add-product" class="product-form">
+      <input type="text" name="name" placeholder="Product Name" required>
+      <input type="number" step="0.01" name="price" placeholder="Price" required>
+      <input type="text" name="image_url" placeholder="Image URL">
+      <input type="text" name="category" placeholder="Category">
+      <button type="submit">Add Product</button>
+    </form>
+
+    <hr>
+
+    <h2>Product List</h2>
+    <div class="product-grid">
+      {% for product in products %}
+      <div class="product-card">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <p>Price: ${{ product.price }}</p>
+          <p>Category: {{ product.category }}</p>
+          <div class="product-actions">
+            <a href="/delete-product/{{ product.id }}" class="btn delete">Delete</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
